@@ -65,7 +65,7 @@ namespace _1_Programming
             //parsing the given array
             //i goes from first element till before last cause I compare current element with next one
             //also there should be enough elements to posible reach more than maxlen
-            for (var i = 0; i < vLen - 1 && vLen - i > maxlen - currentLen; i++)
+            for (var i = 0; (i < vLen - 1) && (vLen - i > maxlen - currentLen); i++)
             {
                 if (v[i] <= v[i + 1])
                     currentLen++;
