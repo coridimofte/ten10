@@ -17,7 +17,7 @@ namespace _2_WebFrontEndTest.Tests
         internal IWebDriver driver;
 
         [Test]
-        public void MyTest([Values("bmw")]String searchText,[Values("Deutsch")] String language)
+        public void Test_2([Values("bmw")]String searchText,[Values("Deutsch")] String language)
         {
             //1. Navigate to the Wikipedia home page, http://www.wikipedia.org/. 
             driver.Navigate().GoToUrl("https://www.wikipedia.org/");
@@ -44,6 +44,19 @@ namespace _2_WebFrontEndTest.Tests
             Checkpoint(true, searchResultPage.LanguageExists("English"), "The language is not present", "The language is present");
         }
 
+        [Test]
+        public void Test_3([Values("Surrey")]String county, [Values("East Clandon")]String testString)
+        {
+            var my_service = new TestService.UKLocationSoapClient("UKLocationSoap");
+
+            //Automate the retrieval of a UK location from a county given as a parameter and
+            var location = my_service.GetUKLocationByCounty(county);
+
+            //validate that the result matches a second string, also given as parameter.
+            var actual = location.ToLower().Contains(testString.ToLower());
+            Checkpoint(true, actual, "The result does not match the string.", "The result matches the string.");
+
+        }
         /// <summary>
         /// Checkpoint method
         /// </summary>
@@ -59,22 +72,20 @@ namespace _2_WebFrontEndTest.Tests
         /// <summary>
         /// Test case setup; it is run for each test
         /// </summary>
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             Console.Out.WriteLine($"-----------{TestContext.CurrentContext.Test.Properties["Description"]}-----------");
 
             driver = GetDriver();
             driver.Manage().Window.Maximize();
-            //_driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(2));
-            //_driver.Manage().Timeouts().SetPageLoadTimeout(TimeSpan.FromSeconds(60));
 
         }
 
         /// <summary>
         /// Test case "clean up"; it is run after each test
         /// </summary>
-        [TearDown]
+        [OneTimeTearDown]
         public void Close()
         {
            driver.Quit();
